@@ -1,30 +1,31 @@
 {
-  description = "Lightweight localhost development environment";
+  description = "My Development Environment";
   inputs = {
     nixpkgs = {
       url = "github:nixos/nixpkgs/nixos-unstable";
     };
+    nvchadOverlay = {
+      url = "github:username/nvchad-overlay";
+    };
   };
   outputs = {
-    self, nixpkgs, ...
+    self, nixpkgs, nvchadOverlay, ...
   }@inputs:
     let
       pkgs = nixpkgs;
     in
     pkgs.mkShell {
-      buildInputs = [
-        pkgs.neovim
-        pkgs.git
-        pkgs.curl
-        pkgs.htop
-        pkgs.zsh
-        pkgs.tmux
-        pkgs.fzf
-        pkgs.ripgrep
+      buildInputs = with pkgs; [
+        neovim
+        git
+        curl
+        htop
+        zsh
+        tmux
+        fzf
+        ripgrep
+        nvchadOverlay.nvchad
       ];
-      # Add NeoVim configuration here
-      nixpkgs.neovim.config = {
-        # Add your NeoVim configuration options here (e.g., plugins)
-      };
+      # No additional NeoVim configuration needed (assuming nvchad is configured in the overlay)
     };
 }
